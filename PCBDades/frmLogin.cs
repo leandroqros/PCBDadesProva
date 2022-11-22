@@ -24,11 +24,11 @@ namespace PCBDades
         SqlDataAdapter tablaTemporal;
         DataSet dts = new DataSet();
         string connectionString = "Data Source=CAFUNEPORTATIL\\SQLEXPRESS;Initial Catalog=PVDades;Integrated Security=True";
-        string select = "Select Salt, Password from Alumnes where 1=1 and Login = '";
+        string select = "Select Password,Salt from Alumnes where 1=1 and Login = '";
         string selectPass = "Select Password from Alumnes where 1=1 and Login = '";
-        string valor;
+        string valor, valor2;
         string nomTabla = "Alumnes";
-        string sal, psenha, paraHash;
+        string paraHash;
         bool valido = false;
 
         private void btnValida_Click(object sender, EventArgs e)
@@ -36,11 +36,12 @@ namespace PCBDades
             //devuelve password para verificar
             GetPassword(txtUser.Text.ToString() + "'");
 
-            //passddbb
+            //passBBDD
             valor = dts.Tables[0].Rows[0]["Password"].ToString();
+            valor2 = dts.Tables[0].Rows[0]["Salt"].ToString();
 
 
-            paraHash = valor + txtPassword.Text.ToString();
+            paraHash = valor2 + txtPassword.Text.ToString();
 
 
             using (SHA256 hash = SHA256.Create())
@@ -51,10 +52,11 @@ namespace PCBDades
             }
 
 
-            if (paraHash == dts.ToString())
+            if (paraHash == valor)
             {
                 valido = true;
             }
+
             if (valido)
             {
                 this.Hide();
@@ -66,13 +68,14 @@ namespace PCBDades
         public DataSet GetPassword(string cadena)
         {
             Connect(); 
-            tablaTemporal = new SqlDataAdapter(selectPass+cadena, conect);
+            tablaTemporal = new SqlDataAdapter(select + cadena, conect);
             conect.Open();
             tablaTemporal.Fill(dts, nomTabla);
             conect.Close();
 
             return dts;
         }
+
         public void Connect()
         {
             conect = new SqlConnection(connectionString);
