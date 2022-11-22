@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace PCBDades
 {
@@ -108,13 +109,7 @@ namespace PCBDades
 
         private void frmDades_Load(object sender, EventArgs e)
         {
-            //Connect();
-            //tablaTemporal = new SqlDataAdapter(query, conect);
-            //conect.Open();
-            //tablaTemporal.Fill(dts, nomTabla);
-            //conect.Close();
-
-            //dtgUsers.DataSource = dts.Tables[0];
+            
         }
     }
 }
