@@ -33,6 +33,20 @@ namespace PCBDades
             conect = new SqlConnection(connectionString);
         }
 
+        public void UpdateData(DataSet dts, string consultaOriginal)
+        {
+            SqlDataAdapter actualizar = new SqlDataAdapter(consultaOriginal, conect);
+            SqlCommandBuilder cmdBuilder = new SqlCommandBuilder(actualizar);
+
+            conect.Open();
+
+            if (dts.HasChanges())
+            {
+                int result = actualizar.Update(dts.Tables[0]);
+            }
+            dts.Tables[0].AcceptChanges();
+        }
+
         private void cmdGetData_Click(object sender, EventArgs e)
         {
             //select con combobox
@@ -88,7 +102,8 @@ namespace PCBDades
 
         private void cmdUpdate_Click(object sender, EventArgs e)
         {
-           
+            UpdateData(dts,select);
+            conect.Close();
         }
 
         private void frmDades_Load(object sender, EventArgs e)

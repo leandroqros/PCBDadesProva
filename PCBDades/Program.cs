@@ -16,7 +16,7 @@ namespace PCBDades
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmDades());
+            Application.Run(new frmLogin());
         }
     }
 }

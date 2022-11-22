@@ -8,12 +8,6 @@ namespace FuncionesBBDDProva
 {
     public class Class1
     {
-
-        
-
-        //Funcion de Conectar
-        
-
         
     }
 }
