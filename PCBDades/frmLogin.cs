@@ -26,7 +26,7 @@ namespace PCBDades
         string connectionString = "Data Source=CAFUNEPORTATIL\\SQLEXPRESS;Initial Catalog=PVDades;Integrated Security=True";
         string select = "Select Salt, Password from Alumnes where 1=1 and Login = '";
         string selectPass = "Select Password from Alumnes where 1=1 and Login = '";
-        string passDeDDBB;
+        string valor;
         string nomTabla = "Alumnes";
         string sal, psenha, paraHash;
         bool valido = false;
@@ -34,12 +34,14 @@ namespace PCBDades
         private void btnValida_Click(object sender, EventArgs e)
         {
             //devuelve password para verificar
-            GetPassword(txtUser.Text.ToString());
+            GetPassword(txtUser.Text.ToString() + "'");
+
+            //passddbb
+            valor = dts.Tables[0].Rows[0]["Password"].ToString();
 
 
+            paraHash = valor + txtPassword.Text.ToString();
 
-
-            //paraHash = sal + csenha;
 
             using (SHA256 hash = SHA256.Create())
             {
@@ -49,27 +51,25 @@ namespace PCBDades
             }
 
 
-            if (paraHash == psenha)
+            if (paraHash == dts.ToString())
             {
                 valido = true;
             }
-            //if (valido)
-            //{
-            //    this.Hide();
-            //    frmDades formDades = new frmDades();
-            //    formDades.ShowDialog();
-            //}
+            if (valido)
+            {
+                this.Hide();
+                frmDades formDades = new frmDades();
+                formDades.ShowDialog();
+            }
         }
 
         public DataSet GetPassword(string cadena)
         {
             Connect(); 
-            tablaTemporal = new SqlDataAdapter(selectPass, conect);
+            tablaTemporal = new SqlDataAdapter(selectPass+cadena, conect);
             conect.Open();
             tablaTemporal.Fill(dts, nomTabla);
             conect.Close();
-
-            string csenha = txtPassword.Text.ToString();
 
             return dts;
         }
